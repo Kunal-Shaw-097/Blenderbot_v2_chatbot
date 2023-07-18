@@ -1,6 +1,6 @@
 [theme]
 primaryColor="white"
-backgroundColor="black"
+backgroundColor="darkgrey"
 secondaryBackgroundColor="lightgrey"
-textColor="white"
+textColor="black"
 font="sans serif"
