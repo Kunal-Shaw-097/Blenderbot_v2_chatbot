@@ -13,7 +13,7 @@ if "Question" not in st.session_state:
 def predict(prompt):
     if len(st.session_state.History) != 0 :
         past_conv = "".join(st.session_state.History)
-        prompt = past_conv + " <s>" + prompt
+        prompt = past_conv + "  " + prompt
     encoded_input = st.session_state.Tokenizer([prompt], return_tensors='pt', max_length = 128).to('cuda')
     output = st.session_state.model.generate(**encoded_input, do_sample = True)
     answer = st.session_state.Tokenizer.batch_decode(output, skip_special_tokens=True)[0]
