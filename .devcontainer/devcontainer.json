@@ -21,11 +21,10 @@
 	"postCreateCommand": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false",
 
 	"hostRequirements": {
-		"cpus": 8,
+		"cpus": 4,
 		"memory": "8gb",
-		"storage": "32gb"
 	 }
-	 
+
 	// Configure tool-specific properties.
 	// "customizations": {},
 
