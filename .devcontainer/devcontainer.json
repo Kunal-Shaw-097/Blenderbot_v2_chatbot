@@ -18,7 +18,7 @@
 	],
 
 	// Uncomment the next line to run commands after the container is created.
-	"postCreateCommand": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false",
+	"postAttachCommand": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false",
 
 	"hostRequirements": {
 		"cpus": 4,
