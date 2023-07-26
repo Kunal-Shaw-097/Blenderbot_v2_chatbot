@@ -18,8 +18,14 @@
 	],
 
 	// Uncomment the next line to run commands after the container is created.
-	"postCreateCommand": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false"
-	
+	"postCreateCommand": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false",
+
+	"hostRequirements": {
+		"cpus": 8,
+		"memory": "8gb",
+		"storage": "32gb"
+	 }
+	 
 	// Configure tool-specific properties.
 	// "customizations": {},
 
