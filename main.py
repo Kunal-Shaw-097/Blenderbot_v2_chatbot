@@ -1,52 +1,75 @@
 import streamlit as st
 from streamlit_chat import message
+from models.utils import Load_Model, Generate, model_info
 import torch
-from transformers import BlenderbotForConditionalGeneration, BlenderbotTokenizer
+from PIL import Image
 
-if "Question" not in st.session_state:
-    model_id = "facebook/blenderbot-400M-distill"
+@st.cache_resource
+def load_model(model_name) : 
+    return Load_Model(model_name)
+
+def init():
+    torch.cuda.empty_cache()
+    if "Question" not in st.session_state:
+        st.session_state.Question = []
+        st.session_state.Response = []
+        st.session_state.History = []
+        st.session_state.model_name = 'Facebook_Blenderbot'
+        st.session_state.Generator = Generate()
+        
+def re_init():
     st.session_state.Question = []
     st.session_state.Response = []
     st.session_state.History = []
-    st.session_state.Tokenizer = BlenderbotTokenizer.from_pretrained(model_id, truncation_side='left')
-    if torch.cuda.is_available():
-        st.session_state.model = BlenderbotForConditionalGeneration.from_pretrained(model_id).to('cuda')
-    else:
-        st.session_state.model = BlenderbotForConditionalGeneration.from_pretrained(model_id)
-
-def predict(prompt):
-    if len(st.session_state.History) != 0 :
-        past_conv = "".join(st.session_state.History)
-        prompt = past_conv + "  " + prompt
-    encoded_input = st.session_state.Tokenizer([prompt], return_tensors='pt', max_length = 128)
-    if torch.cuda.is_available():
-        encoded_input = encoded_input.to('cuda')
-    output = st.session_state.model.generate(**encoded_input, do_sample = True)
-    answer = st.session_state.Tokenizer.batch_decode(output, skip_special_tokens=True)[0]
-    return answer
+    st.session_state.input = " "
+    del st.session_state.Generator
+    st.session_state.Generator = Generate()
 
 def infer():
     if st.session_state.input and st.session_state.input != " ":
-        Response = predict(st.session_state.input)
+        Response = st.session_state.Generator.generate(model, st.session_state.input)
         st.session_state["Question"].append(st.session_state.input)
         st.session_state["Response"].append(Response)
-        if len(st.session_state["History"]) == 0:
-            st.session_state["History"].append(st.session_state.input + '   ' + Response + '  ')
-        else :
-            st.session_state["History"].append('  ' + st.session_state.input + '   ' + Response + '  ')
         st.session_state.input = " "
 
-st.title("Chatbot")
-st.sidebar.radio('R:',[1,2])
-chatbox = st.container()
+def main():
+    col1, col2 = st.columns([4,1])
+    with col1 :
+        st.title("🤖 Chatbot")
+    with col2 :
+        if  st.session_state.model_name == 'Facebook_Blenderbot' :
+            img = Image.open("static/blenderbot.png")
+        else :
+            img = Image.open("static/dialogpt.png")
+        img = img.resize((175, 100))
+        st.image(img)
+    with st.sidebar :
+        model_name = st.radio('Select a Model :',['Facebook_Blenderbot','Microsoft_Dialogpt'], 
+                              index = 0, key = 'model_name', on_change = re_init)
+        
+        with st.container() :
+            st.markdown("<style>.custom_div{background-color: black;  border: 2px ; border-radius : 4px; text;  padding: 10px; margin : 0 0 20px 0}</style> \
+                        <div class = custom_div>" + "About the Model :" +  model_info(st.session_state.model_name) +"</div>",
+                         unsafe_allow_html= True)
+            
+        st.error("Note : Due to the small context length, the models are not able to have any context of past chat after 3-4 turns.")
+        st.info("[Github Link](https://github.com/Kunal-Shaw-097/streamlit_chatbot_app)", icon = '👾')
 
-prompt = st.text_input("Type Here :", key = 'input', on_change = infer)
+    chatbox = st.container()
 
-if prompt:
     with chatbox:    
         for key,(i, j) in enumerate(zip(st.session_state["Question"], st.session_state["Response"])):
                 message(i, is_user= True, key = key)
                 message(j, key = 10001 + key)
+
+    prompt = st.text_input("Type Here :", key = 'input', on_change = infer)
+
+if __name__ ==  "__main__":
+    
+    init()
+    model = load_model(st.session_state.model_name)
+    main()
+
 
 
 
