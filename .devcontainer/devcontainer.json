@@ -15,11 +15,11 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		8501, 8502
-	]
+	],
 
 	// Uncomment the next line to run commands after the container is created.
-	// "postCreateCommand": "cat /etc/os-release",
-
+	"postCreateCommand": "streamlit run main.py --server.enableCORS false --server.enableXsrfProtection false"
+	
 	// Configure tool-specific properties.
 	// "customizations": {},
 
