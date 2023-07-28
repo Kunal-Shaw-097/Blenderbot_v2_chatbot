@@ -13,11 +13,11 @@ The models used are Facebook/[**Blenderbot-400M-Distill**](https://huggingface.c
 ###
 Click on the "create codespace on main" tab and please wait for 5 mins :)
 
-After 5 minutes, a Web Vscode editor instane should open.
+After 5 minutes, a Web Vscode editor instance should open.
 
 ![](static/Instruction2.png)
 
-Wait another 20-30 sec for all the proesses to finish and then head over to the ports section and click on the "Globe" icon as displayed on the left image above, or just wait for the prompt shown on the right image above to show up and click on "Open in Browser".
+Wait another 20-30 sec for all the processes to finish and then head over to the ports section and click on the "Globe" icon as displayed on the left image above, or just wait for the prompt shown on the right image above to show up and click on "Open in Browser".
 
 This should route you to a website which is being hosted from your github codespace :)
 
