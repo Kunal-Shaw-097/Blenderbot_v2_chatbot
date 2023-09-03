@@ -8,6 +8,17 @@ The models used are Facebook/[**Blenderbot-400M-Distill**](https://huggingface.c
 ###
 ![](static/huggingface.png)
 
+# Running the project locally
+To run the project locally, follow the following commands :
+```
+git clone https://github.com/Kunal-Shaw-097/streamlit_chatbot_app
+
+cd streamlit_chatbot_app
+
+pip install requirements.txt
+
+streamlit run main.py
+```
 # Using Github Codespace to run this project!
 ![](static/Instruction.png)
 ###
